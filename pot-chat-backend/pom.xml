@@ -107,18 +107,25 @@
         </dependency>
 
         <!--        微信小程序-->
-<!--        <dependency>-->
-<!--            <groupId>com.github.binarywang</groupId>-->
-<!--            <artifactId>weixin-java-miniapp</artifactId>-->
-<!--            <version>4.5.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.binarywang</groupId>-->
+        <!--            <artifactId>weixin-java-miniapp</artifactId>-->
+        <!--            <version>4.5.0</version>-->
+        <!--        </dependency>-->
 
         <!--        腾讯云api-->
-<!--        <dependency>-->
-<!--            <groupId>com.tencentcloudapi</groupId>-->
-<!--            <artifactId>tencentcloud-sdk-java</artifactId>-->
-<!--            <version>3.1.896</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.tencentcloudapi</groupId>-->
+        <!--            <artifactId>tencentcloud-sdk-java</artifactId>-->
+        <!--            <version>3.1.896</version>-->
+        <!--        </dependency>-->
+
+        <!--        七牛云 sdk-->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>7.1.1</version>
+        </dependency>
 
         <!--        邮箱服务-->
         <dependency>
@@ -134,11 +141,11 @@
         </dependency>
 
         <!--        工具类-->
-<!--        <dependency>-->
-<!--            <groupId>org.redisson</groupId>-->
-<!--            <artifactId>redisson-spring-boot-starter</artifactId>-->
-<!--            <version>3.17.7</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.redisson</groupId>-->
+        <!--            <artifactId>redisson-spring-boot-starter</artifactId>-->
+        <!--            <version>3.17.7</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -167,6 +174,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator-autoconfigure</artifactId>
             <version>2.7.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>7.12.0</version>
         </dependency>
     </dependencies>
 

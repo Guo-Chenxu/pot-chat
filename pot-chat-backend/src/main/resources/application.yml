@@ -1,5 +1,5 @@
 server:
-  port: 39240
+  port:
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
@@ -72,6 +72,12 @@ spring:
           socketFactory:
             port:
             class: javax.net.ssl.SSLSocketFactory
+
+qiniu:
+  accessKey:
+  secretKey:
+  bucketName:
+  domain:
 
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
