@@ -30,7 +30,7 @@ public class R<T> implements Serializable {
     private Integer code;
 
     @ApiModelProperty("错误信息")
-    private String msg;
+    private String message;
 
     @ApiModelProperty("数据")
     private T data;

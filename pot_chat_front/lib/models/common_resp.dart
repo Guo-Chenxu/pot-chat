@@ -1,29 +1,26 @@
 class CommonResp {
-  int? status;
+  int? code;
   String? message;
-  String? error;
   dynamic data;
 
-  CommonResp({this.status, this.message, this.error, this.data});
+  CommonResp({this.code, this.message, this.data});
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> data = {};
-    data['status'] = status;
-    data['msg'] = message;
-    data['error'] = error;
+    data['code'] = code;
+    data['message'] = message;
     data['data'] = this.data;
     return data;
   }
 
   CommonResp.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    message = json['msg'];
-    error = json['error'];
+    code = json['code'];
+    message = json['message'];
     data = json['data'];
   }
 
   @override
   String toString() {
-    return 'CommonResp(status: $status, message: $message, error: $error, data: $data)';
+    return 'CommonResp(code: $code, message: $message, data: $data)';
   }
 }
