@@ -8,6 +8,7 @@
         <result property="email" column="email" jdbcType="VARCHAR"/>
         <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="face" column="face"/>
         <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
         <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
     </resultMap>

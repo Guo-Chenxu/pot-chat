@@ -66,7 +66,7 @@ public class QiniuCloudServiceImpl implements QiniuCloudService {
         } catch (QiniuException ex) {
             Response r = ex.response;
             log.info("QiniuException: {}", r.toString());
-            return null;
+            throw new RuntimeException("文件上传失败");
         }
     }
 
@@ -77,7 +77,7 @@ public class QiniuCloudServiceImpl implements QiniuCloudService {
             bytes = file.getBytes();
         } catch (IOException e) {
             log.error("文件上传失败，{}", e.getMessage());
-            return "";
+            throw new RuntimeException("文件上传失败");
         }
         return this.bytesUpload(bytes, fileName);
     }

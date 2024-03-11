@@ -4,12 +4,20 @@ package com.guochenxu.potchatbackend.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.server.HttpServerRequest;
+import com.guochenxu.potchatbackend.constants.HttpCode;
 import com.guochenxu.potchatbackend.dto.R;
+import com.guochenxu.potchatbackend.dto.request.AddFaceReq;
+import com.guochenxu.potchatbackend.dto.request.LoginReq;
+import com.guochenxu.potchatbackend.dto.request.RegisterReq;
+import com.guochenxu.potchatbackend.dto.response.LoginResp;
+import com.guochenxu.potchatbackend.entity.User;
 import com.guochenxu.potchatbackend.service.QiniuCloudService;
 import com.guochenxu.potchatbackend.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.Serializable;
@@ -58,16 +67,68 @@ public class UserController {
         return R.success(url);
     }
 
-    @PostMapping("/changeAvatar")
+    @PostMapping("/sendVerifyCode")
+    @SaIgnore
+    @ApiOperation("发送验证码")
+    public R sendVerifyCode(@RequestParam("email") @Email String email) {
+        return userService.sendVerifyCode(email)
+                ? R.success()
+                : R.error();
+    }
+
+    @PostMapping("/register")
+    @SaIgnore
+    @ApiOperation("注册")
+    public R register(@RequestBody RegisterReq req) {
+        User u = User.builder().email(req.getEmail()).avatar(req.getAvatar())
+                .password(DigestUtil.bcrypt(req.getPassword())).password(req.getNickname()).build();
+        return userService.register(u)
+                ? R.success()
+                : R.error();
+    }
+
+    @PostMapping("/login")
+    @SaIgnore
+    @ApiOperation("邮箱密码登录")
+    public R<LoginResp> login(@RequestBody LoginReq req) {
+        if (StringUtils.isBlank(req.getEmail()) || StringUtils.isBlank(req.getPassword())) {
+            return R.error(HttpCode.PARAM_WRONG, "用户名和密码不能为空");
+        }
+        LoginResp resp = userService.login(req);
+        return resp == null
+                ? R.error(HttpCode.PARAM_WRONG, "用户名或密码错误")
+                : R.success(resp);
+    }
+
+    @PostMapping("/faceLogin")
+    @SaIgnore
+    @ApiOperation("人脸登录")
+    public R<LoginResp> faceLogin(@RequestBody LoginReq req) {
+        if (StringUtils.isBlank(req.getEmail()) || req.getImage() == null || req.getImage().isEmpty()) {
+            return R.error(HttpCode.PARAM_WRONG, "用户名和人脸信息不能为空");
+        }
+
+        LoginResp resp = userService.faceLogin(req);
+        return resp == null
+                ? R.error(HttpCode.PARAM_WRONG, "用户名或者人脸信息错误")
+                : R.success(resp);
+    }
+
+    @PostMapping("/addFace")
     @SaCheckLogin
-    @ApiOperation("修改用户头像")
-    public R changeAvatar(@RequestParam("file") @NotNull MultipartFile file) {
-        int idx = Optional.ofNullable(file.getOriginalFilename()).orElse(".").lastIndexOf('.');
-        String imageName = "avatar/" + UUID.randomUUID().toString().replace("-", "")
-                + file.getOriginalFilename().substring(idx);
-        String url = qiniuCloudService.fileUpload(file, imageName);
-        return userService.changeAvatar(StpUtil.getLoginIdAsLong(), url)
-                ? R.success(url) : R.error("修改失败");
+    @ApiOperation("添加人脸")
+    public R addFace(@RequestBody AddFaceReq req) {
+        return userService.addFace(StpUtil.getLoginIdAsLong(), req)
+                ? R.success()
+                : R.error("用户不存在或者验证码错误");
+    }
+
+    @PostMapping("/logout")
+    @SaCheckLogin
+    @ApiOperation("退出登录")
+    public R logout() {
+        StpUtil.logout();
+        return R.success();
     }
 }
 

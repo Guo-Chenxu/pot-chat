@@ -4,6 +4,12 @@ package com.guochenxu.potchatbackend.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +35,8 @@ public class User implements Serializable {
     /**
      * 主键, 唯一标识
      */
+    @TableId(type = IdType.ASSIGN_ID)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
     /**
      * 手机号
@@ -47,12 +55,17 @@ public class User implements Serializable {
      */
     private String password;
     /**
+     * 人脸信息
+     */
+    private String face;
+    /**
      * 头像
      */
     private String avatar;
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private Date createdAt;
 }
 
