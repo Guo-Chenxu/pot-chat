@@ -80,9 +80,7 @@ public class UserController {
     @SaIgnore
     @ApiOperation("注册")
     public R register(@RequestBody RegisterReq req) {
-        User u = User.builder().email(req.getEmail()).avatar(req.getAvatar())
-                .password(DigestUtil.bcrypt(req.getPassword())).password(req.getNickname()).build();
-        return userService.register(u)
+        return userService.register(req)
                 ? R.success()
                 : R.error();
     }

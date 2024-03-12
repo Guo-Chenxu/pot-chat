@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
 import 'package:pot_chat_front/constants/constants.dart';
 import 'package:pot_chat_front/http/http_code.dart';
 import 'package:pot_chat_front/models/common_resp.dart';
@@ -7,6 +9,8 @@ import 'package:pot_chat_front/service/user_service.dart';
 
 class RegisterController extends GetxController {
   final UserService _userService = Get.find<UserService>();
+  final Logger _logger = Logger();
+  final ImagePicker _picker = Get.find<ImagePicker>();
 
   final _isObscure = true.obs;
 
@@ -77,14 +81,35 @@ class RegisterController extends GetxController {
       return;
     }
 
-    // CommonResp? commonResp = await _userService.register(_username, _password);
-    // if (commonResp == null || commonResp.code != HttpCode.success) {
-    //   Get.snackbar('出现错误', commonResp?.message ?? Constants.defaultError);
-    //   return;
-    // }
+    CommonResp? commonResp = await _userService.register(
+        email: _email,
+        nickname: _nickname,
+        password: _password,
+        avatar: _avatar,
+        verifyCode: _verifyCode);
+    if (commonResp == null || commonResp.code != HttpCode.success) {
+      Get.snackbar('出现错误', commonResp?.message ?? Constants.defaultError);
+      return;
+    }
 
     Get.snackbar('注册成功', '快去登录吧');
-    const String route = AppRoutes.login;
+    const String route = AppRoutes.home;
     Get.toNamed(route);
+  }
+
+  Future<String> uploadAvatar() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile == null) {
+      return '';
+    }
+
+    final fileBytes = await pickedFile.readAsBytes();
+    CommonResp? commonResp = await _userService.uploadAvatar(fileBytes);
+    if (commonResp == null || commonResp.code != HttpCode.success) {
+      Get.snackbar('出现错误', commonResp?.message ?? Constants.defaultError);
+      return '';
+    }
+
+    return commonResp.message!;
   }
 }

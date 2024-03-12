@@ -3,6 +3,7 @@ package com.guochenxu.potchatbackend.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.guochenxu.potchatbackend.dto.request.AddFaceReq;
 import com.guochenxu.potchatbackend.dto.request.LoginReq;
+import com.guochenxu.potchatbackend.dto.request.RegisterReq;
 import com.guochenxu.potchatbackend.dto.response.LoginResp;
 import com.guochenxu.potchatbackend.entity.User;
 
@@ -23,7 +24,7 @@ public interface UserService extends IService<User> {
     /**
      * 注册
      */
-    boolean register(User user);
+    boolean register(RegisterReq req);
 
     /**
      * 邮箱密码登录

@@ -38,4 +38,7 @@ public class RegisterReq implements Serializable {
 
     @ApiModelProperty("头像")
     private String avatar;
+
+    @ApiModelProperty("验证码")
+    private String verifyCode;
 }

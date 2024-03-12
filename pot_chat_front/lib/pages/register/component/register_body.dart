@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pot_chat_front/pages/register/component/avatar_body.dart';
 import 'package:pot_chat_front/pages/register/component/email_body.dart';
 import 'package:pot_chat_front/pages/register/component/nickname_body.dart';
 import 'package:pot_chat_front/pages/register/component/password_body.dart';
@@ -22,7 +23,9 @@ class RegisterBody extends GetView<RegisterController> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // todo 头像
+            // 头像
+            AvatarBody(),
+            const SizedBox(height: 20),
             // 昵称
             const NicknameBody(),
             const SizedBox(height: 20),

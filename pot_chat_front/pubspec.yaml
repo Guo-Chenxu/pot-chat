@@ -47,6 +47,7 @@ dependencies:
   logger:
   sp_util:
   intl:
+  image_picker:
 
 
   # The following adds the Cupertino Icons font to your application.

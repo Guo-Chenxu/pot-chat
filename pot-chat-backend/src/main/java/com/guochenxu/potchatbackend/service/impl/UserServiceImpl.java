@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guochenxu.potchatbackend.dto.request.AddFaceReq;
 import com.guochenxu.potchatbackend.dto.request.LoginReq;
+import com.guochenxu.potchatbackend.dto.request.RegisterReq;
 import com.guochenxu.potchatbackend.dto.response.LoginResp;
 import com.guochenxu.potchatbackend.mapper.UserMapper;
 import com.guochenxu.potchatbackend.entity.User;
@@ -52,7 +53,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean register(User user) {
+    public boolean register(RegisterReq req) {
+        if (!verifyCodeService.checkEmailVerifyCode(req.getEmail(), req.getVerifyCode())) {
+            throw new RuntimeException("验证码错误");
+        }
+        User user = User.builder().email(req.getEmail()).nickname(req.getNickname())
+                .password(req.getPassword()).avatar(req.getAvatar()).build();
         return userMapper.insert(user) > 0;
     }
 
