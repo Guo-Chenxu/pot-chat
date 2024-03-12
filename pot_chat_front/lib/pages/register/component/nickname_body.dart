@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pot_chat_front/pages/register/register_controller.dart';
-import 'package:pot_chat_front/routes/app_pages.dart';
 
 // 昵称框
-class NickName extends GetView<RegisterController> {
-  const NickName({super.key});
+class NicknameBody extends GetView<RegisterController> {
+  const NicknameBody({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / 3,
+      width: MediaQuery.of(context).size.width / 2,
       child: TextField(
         autofocus: true,
-        onChanged: (value) => controller.onUsernameChanged(value),
+        onChanged: (value) => controller.onNicknameChanged(value),
         decoration: const InputDecoration(
           labelText: '昵称',
-          hintText: '',
+          hintText: '给自己取一个好听的名字吧',
           prefixIcon: Icon(Icons.person),
         ),
       ),

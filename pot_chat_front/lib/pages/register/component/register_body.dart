@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pot_chat_front/pages/register/component/nickname.dart';
+import 'package:pot_chat_front/pages/register/component/email_body.dart';
+import 'package:pot_chat_front/pages/register/component/nickname_body.dart';
+import 'package:pot_chat_front/pages/register/component/password_body.dart';
+import 'package:pot_chat_front/pages/register/component/verify_code_body.dart';
 import 'package:pot_chat_front/pages/register/register_controller.dart';
 import 'package:pot_chat_front/routes/app_pages.dart';
 
@@ -19,58 +22,19 @@ class RegisterBody extends GetView<RegisterController> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const NickName(),
+            // todo 头像
+            // 昵称
+            const NicknameBody(),
             const SizedBox(height: 20),
-            // 用户名
-            SizedBox(
-              width: MediaQuery.of(context).size.width / 3,
-              child: TextField(
-                autofocus: true,
-                onChanged: (value) => controller.onUsernameChanged(value),
-                decoration: const InputDecoration(
-                  labelText: '用户名',
-                  hintText: '请输入用户名',
-                  prefixIcon: Icon(Icons.person),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
+            // 邮箱
+            const EmailBody(),
+            const SizedBox(height: 20),
             // 密码
-            GetX<RegisterController>(
-              init: controller,
-              initState: (_) {},
-              builder: (_) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width / 3,
-                  child: TextField(
-                    autocorrect: false,
-                    obscureText: _.isObscure,
-                    autofocus: true,
-                    onChanged: (value) => controller.onPasswordChanged(value),
-                    decoration: InputDecoration(
-                      labelText: '密码',
-                      hintText: '请输入密码',
-                      prefixIcon: const Icon(Icons.password),
-                      suffixIcon: IconButton(
-                        onPressed: () {
-                          _.changeObscure();
-                        },
-                        icon: Obx(() {
-                          return Icon(_.isObscure
-                              ? Icons.visibility_off
-                              : Icons.visibility);
-                        }),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
+            const PasswordBody(),
+            const SizedBox(height: 20),
+            // 验证码
+            VerifyCodeBody(),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,

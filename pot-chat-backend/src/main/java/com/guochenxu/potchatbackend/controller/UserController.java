@@ -73,7 +73,7 @@ public class UserController {
     public R sendVerifyCode(@RequestParam("email") @Email String email) {
         return userService.sendVerifyCode(email)
                 ? R.success()
-                : R.error();
+                : R.error("验证码发送失败");
     }
 
     @PostMapping("/register")
