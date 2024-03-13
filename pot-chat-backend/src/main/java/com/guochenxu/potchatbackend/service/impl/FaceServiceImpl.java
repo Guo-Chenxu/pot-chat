@@ -1,8 +1,9 @@
 package com.guochenxu.potchatbackend.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
-import com.guochenxu.potchatbackend.service.FaceMatchService;
+import com.guochenxu.potchatbackend.service.FaceService;
 import com.guochenxu.potchatbackend.utils.GsonUtils;
 import com.guochenxu.potchatbackend.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,22 +15,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-/**
- * 人脸对比
- */
 
 @Slf4j
 @Service
-public class FaceMatchServiceImpl implements FaceMatchService {
+public class FaceServiceImpl implements FaceService {
 
     private static final double THRESHOLD = 80;
 
@@ -85,13 +79,6 @@ public class FaceMatchServiceImpl implements FaceMatchService {
         return null;
     }
 
-    /**
-     * 人脸对比
-     *
-     * @param imgStr1 数据库中的人脸, 链接
-     * @param imgStr2 base64字符串
-     * @return 是否相同
-     */
     @Override
     public boolean faceMatch(String imgStr1, String imgStr2) {
         if (imgStr1 == null || imgStr2 == null) {
@@ -131,6 +118,32 @@ public class FaceMatchServiceImpl implements FaceMatchService {
             return score >= THRESHOLD;
         } catch (Exception e) {
             log.error("出现错误: ", e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean faceDetect(String imgStr) {
+        String url = "https://aip.baidubce.com/rest/2.0/face/v3/detect";
+        try {
+            Map<String, Object> map = new HashMap<>();
+            map.put("image", imgStr);
+            map.put("face_field", "face_probability");
+            map.put("image_type", "BASE64");
+            String param = GsonUtils.toJson(map);
+            String accessToken = getAuth(accessKey, secretKey);
+
+            String result = HttpUtil.post(url, accessToken, "application/json", param);
+            String result1 = JSON.toJSONString(JSONObject.parseObject(result).get("result"));
+
+            int num = Integer.parseInt(String.valueOf(JSONObject.parseObject(result1).get("face_num")));
+            JSONArray faceList = JSON.parseArray(String.valueOf(JSONObject.parseObject(result1).get("face_list")));
+            double faceProbability = Double.parseDouble(
+                    String.valueOf(faceList.getJSONObject(0).get("face_probability")));
+            log.info("num: {}, faceProbability: {}", num, faceProbability);
+            return num == 1 && faceProbability * 100 >= THRESHOLD;
+        } catch (Exception e) {
+            log.error("人脸检测出现错误: ", e);
         }
         return false;
     }

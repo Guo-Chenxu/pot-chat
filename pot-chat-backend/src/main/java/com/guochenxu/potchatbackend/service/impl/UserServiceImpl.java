@@ -10,20 +10,17 @@ import com.guochenxu.potchatbackend.dto.request.RegisterReq;
 import com.guochenxu.potchatbackend.dto.response.LoginResp;
 import com.guochenxu.potchatbackend.mapper.UserMapper;
 import com.guochenxu.potchatbackend.entity.User;
-import com.guochenxu.potchatbackend.service.FaceMatchService;
+import com.guochenxu.potchatbackend.service.FaceService;
 import com.guochenxu.potchatbackend.service.QiniuCloudService;
 import com.guochenxu.potchatbackend.service.UserService;
 import com.guochenxu.potchatbackend.service.VerifyCodeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * (User)表服务实现类
@@ -45,7 +42,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     @Resource
-    private FaceMatchService faceMatchService;
+    private FaceService faceService;
 
     @Override
     public boolean sendVerifyCode(String email) {
@@ -91,7 +88,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new RuntimeException("人脸不存在");
         }
 
-        if (!faceMatchService.faceMatch(u.getFace(), base64)) {
+        if (!faceService.faceMatch(u.getFace(), base64)) {
             return null;
         }
         StpUtil.login(u.getId());
@@ -112,6 +109,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String base64;
         try {
             base64 = Base64.getEncoder().encodeToString(req.getImage().getBytes());
+            if (!faceService.faceDetect(base64)) {
+                log.error("添加人脸时出错, 未检测到人脸");
+                throw new RuntimeException("人脸不存在");
+            }
         } catch (IOException e) {
             log.info("添加人脸时出错: ", e);
             throw new RuntimeException("人脸不存在");
