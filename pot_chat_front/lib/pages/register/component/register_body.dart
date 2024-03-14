@@ -38,6 +38,7 @@ class RegisterBody extends GetView<RegisterController> {
             // 验证码
             VerifyCodeBody(),
             const SizedBox(height: 20),
+            // 按钮
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,7 +51,11 @@ class RegisterBody extends GetView<RegisterController> {
                   width: 10,
                 ),
                 ElevatedButton(
-                  child: const Text('已有账号, 去登录'),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                  child: const Text(
+                    '已有账号, 去登录',
+                    style: TextStyle(color: Colors.white)
+                  ),
                   onPressed: () => Get.toNamed(AppRoutes.login),
                 )
               ],

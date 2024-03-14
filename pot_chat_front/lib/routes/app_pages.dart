@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:pot_chat_front/pages/home/index.dart';
+import 'package:pot_chat_front/pages/login/login_binding.dart';
+import 'package:pot_chat_front/pages/login/login_view.dart';
 import 'package:pot_chat_front/pages/notfound/index.dart';
 import 'package:pot_chat_front/pages/register/register_binding.dart';
 import 'package:pot_chat_front/pages/register/register_view.dart';
@@ -16,6 +18,11 @@ class AppPages {
       name: AppRoutes.register,
       page: () => const RegisterView(),
       binding: RegisterBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginView(),
+      binding: LoginBinding(),
     ),
   ];
 }

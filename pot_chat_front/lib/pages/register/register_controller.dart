@@ -93,13 +93,13 @@ class RegisterController extends GetxController {
     }
 
     Get.snackbar('注册成功', '快去登录吧');
-    const String route = AppRoutes.home;
-    Get.toNamed(route);
+    Get.toNamed(AppRoutes.login);
   }
 
   Future<String> uploadAvatar() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile == null) {
+      Get.snackbar("选择照片不能为空", "");
       return '';
     }
 
