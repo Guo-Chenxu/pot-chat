@@ -1,12 +1,10 @@
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:logger/logger.dart';
-import 'package:pot_chat_front/constants/constants.dart';
 import 'package:pot_chat_front/http/http_code.dart';
 import 'package:pot_chat_front/models/common_resp.dart';
 import 'package:pot_chat_front/routes/app_pages.dart';
 import 'package:pot_chat_front/service/user_service.dart';
-import 'package:sp_util/sp_util.dart';
 
 class AddFaceController extends GetxController {
   final Logger _logger = Logger();
