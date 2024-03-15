@@ -60,7 +60,7 @@ class UserService {
   // 人脸登录
   Future<CommonResp?> faceLogin(String email, List<int> image) async {
     Map<String, dynamic> resp = await HttpRequest.formPost(
-      RequestApi.login,
+      RequestApi.faceLogin,
       params: {
         "email": email,
         "image": dio.MultipartFile.fromBytes(image, filename: "face.jpg"),
