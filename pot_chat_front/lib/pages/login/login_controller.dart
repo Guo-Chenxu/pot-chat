@@ -6,6 +6,7 @@ import 'package:pot_chat_front/http/http_code.dart';
 import 'package:pot_chat_front/models/common_resp.dart';
 import 'package:pot_chat_front/models/login.dart';
 import 'package:pot_chat_front/models/user.dart';
+import 'package:pot_chat_front/routes/app_pages.dart';
 import 'package:pot_chat_front/service/user_service.dart';
 import 'package:sp_util/sp_util.dart';
 
@@ -83,5 +84,6 @@ class LoginController extends GetxController {
     Get.snackbar('登录成功', '欢迎回来');
     _logger.i("登录 token: ${SpUtil.getString(Constants.authorization)}");
     _logger.i("登录 用户信息: ${SpUtil.getObject(Constants.user)}");
+    Get.toNamed(AppRoutes.session);
   }
 }

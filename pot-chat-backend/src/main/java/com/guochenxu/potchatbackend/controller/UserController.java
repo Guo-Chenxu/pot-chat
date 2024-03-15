@@ -88,25 +88,25 @@ public class UserController {
     @PostMapping("/login")
     @SaIgnore
     @ApiOperation("邮箱密码登录")
-    public R<LoginResp> login(@RequestBody LoginReq req) {
-        if (StringUtils.isBlank(req.getEmail()) || StringUtils.isBlank(req.getPassword())) {
-            return R.error(HttpCode.PARAM_WRONG, "用户名和密码不能为空");
+    public R<LoginResp> login(@RequestParam("email") @NotNull String email, @RequestParam("password") String password) {
+        if (StringUtils.isBlank(email) || StringUtils.isBlank(password)) {
+            return R.error(HttpCode.PARAM_WRONG, "邮箱和密码不能为空");
         }
-        LoginResp resp = userService.login(req);
+        LoginResp resp = userService.login(email, password);
         return resp == null
-                ? R.error(HttpCode.PARAM_WRONG, "用户名或密码错误")
+                ? R.error(HttpCode.PARAM_WRONG, "邮箱或密码错误")
                 : R.success(resp);
     }
 
     @PostMapping("/faceLogin")
     @SaIgnore
     @ApiOperation("人脸登录")
-    public R<LoginResp> faceLogin(@RequestBody LoginReq req) {
-        if (StringUtils.isBlank(req.getEmail()) || req.getImage() == null || req.getImage().isEmpty()) {
-            return R.error(HttpCode.PARAM_WRONG, "用户名和人脸信息不能为空");
+    public R<LoginResp> faceLogin(@RequestParam("email") String email, @RequestParam("image") MultipartFile image) {
+        if (StringUtils.isBlank(email) || image == null || image.isEmpty()) {
+            return R.error(HttpCode.PARAM_WRONG, "邮箱和人脸信息不能为空");
         }
 
-        LoginResp resp = userService.faceLogin(req);
+        LoginResp resp = userService.faceLogin(email, image);
         return resp == null
                 ? R.error(HttpCode.PARAM_WRONG, "用户名或者人脸信息错误")
                 : R.success(resp);
@@ -115,8 +115,8 @@ public class UserController {
     @PostMapping("/addFace")
     @SaCheckLogin
     @ApiOperation("添加人脸")
-    public R addFace(@RequestBody AddFaceReq req) {
-        return userService.addFace(StpUtil.getLoginIdAsLong(), req)
+    public R addFace(@RequestParam("image") MultipartFile image, @RequestParam("verifyCode") String verifyCode) {
+        return userService.addFace(StpUtil.getLoginIdAsLong(), image, verifyCode)
                 ? R.success()
                 : R.error("用户不存在或者验证码错误");
     }

@@ -13,7 +13,6 @@ class PasswordBody extends GetView<RegisterController> {
       initState: (_) {},
       builder: (_) {
         return SizedBox(
-          width: MediaQuery.of(context).size.width / 2,
           child: TextField(
             autocorrect: false,
             obscureText: _.isObscure,

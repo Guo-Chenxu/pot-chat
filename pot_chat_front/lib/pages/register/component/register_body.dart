@@ -19,12 +19,12 @@ class RegisterBody extends GetView<RegisterController> {
         title: const Text("注册页面"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
           children: [
             // 头像
-            AvatarBody(),
+            Center(
+              child: AvatarBody(),
+            ),
             const SizedBox(height: 20),
             // 昵称
             const NicknameBody(),
@@ -52,10 +52,9 @@ class RegisterBody extends GetView<RegisterController> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                  child: const Text(
-                    '已有账号, 去登录',
-                    style: TextStyle(color: Colors.white)
-                  ),
+                  child: const Text('已有账号, 去登录',
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 255, 255, 255))),
                   onPressed: () => Get.toNamed(AppRoutes.login),
                 )
               ],

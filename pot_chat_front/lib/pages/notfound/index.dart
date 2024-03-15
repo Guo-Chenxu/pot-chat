@@ -19,7 +19,7 @@ class NotfoundView extends StatelessWidget {
           children: [
             ElevatedButton(
               child: const Text('返回主页'),
-              onPressed: () => Get.toNamed(AppRoutes.home),
+              onPressed: () => Get.toNamed(AppRoutes.init),
             )
           ],
         ),

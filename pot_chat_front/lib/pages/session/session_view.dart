@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pot_chat_front/pages/register/component/register_body.dart';
 import 'package:pot_chat_front/pages/register/register_controller.dart';
+import 'package:pot_chat_front/pages/session/component/session_body.dart';
+import 'package:pot_chat_front/pages/session/session_controller.dart';
 
-class RegisterView extends StatelessWidget {
-  const RegisterView({super.key});
+class SessionView extends StatelessWidget {
+  const SessionView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<RegisterController>(
+    return GetBuilder<SessionController>(
       builder: (controller) => const Scaffold(
-        body: RegisterBody(),
+        body: SessionBody(),
       ),
     );
   }

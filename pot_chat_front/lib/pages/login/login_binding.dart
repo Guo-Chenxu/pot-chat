@@ -9,7 +9,7 @@ class LoginBinding implements Bindings {
   @override
   void dependencies() {
     _logger.i('依赖注入');
-    Get.lazyPut(() => UserService());
+    Get.lazyPut<UserService>(() => UserService());
     Get.lazyPut<LoginController>(() => LoginController());
   }
 }

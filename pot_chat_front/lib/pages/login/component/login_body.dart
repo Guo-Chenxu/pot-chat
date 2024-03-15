@@ -16,9 +16,7 @@ class LoginBody extends GetView<LoginController> {
         title: const Text("登录页面"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
           children: [
             // 用户名
             const EmailBody(),
@@ -31,14 +29,20 @@ class LoginBody extends GetView<LoginController> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  child: const Text('邮箱密码登录'),
-                  onPressed: () => {controller.login()},
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  child: const Text('人脸登录'),
-                  onPressed: () => {controller.faceLogin()},
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      child: const Text('邮箱密码登录'),
+                      onPressed: () => {controller.login()},
+                    ),
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      child: const Text('人脸登录'),
+                      onPressed: () => {controller.faceLogin()},
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

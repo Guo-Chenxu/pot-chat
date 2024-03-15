@@ -9,7 +9,6 @@ class EmailBody extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
       child: TextField(
         autofocus: true,
         onChanged: (value) => controller.onEmailChanged(value),

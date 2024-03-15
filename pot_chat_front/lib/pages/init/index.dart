@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pot_chat_front/routes/app_pages.dart';
 
-class HomeView extends StatelessWidget {
-  const HomeView({Key? key}) : super(key: key);
+class InitView extends StatelessWidget {
+  const InitView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,5 @@
 class RequestApi {
-  static const String baseUrl = "http://127.0.0.1:36720/api/pot";
+  static const String baseUrl = "http://10.29.23.17:36720/api/pot";
 
   static const String uploadAvatar = "/user/uploadAvatar";
   static const String sendVerifyCode = "/user/sendVerifyCode";

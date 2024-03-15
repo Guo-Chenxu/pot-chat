@@ -10,8 +10,9 @@ class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LoginController>(
-        builder: (controller) => const Scaffold(
-              body: LoginBody(),
-            ));
+      builder: (controller) => const Scaffold(
+        body: LoginBody(),
+      ),
+    );
   }
 }

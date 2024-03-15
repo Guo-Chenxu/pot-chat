@@ -14,18 +14,18 @@ class RouteAuthMiddleware extends GetMiddleware {
   final Logger _logger = Logger();
 
   static final List<String> _skipRoutes = [
-    AppRoutes.home,
+    AppRoutes.init,
   ];
 
   @override
   RouteSettings? redirect(String? route) {
-    _logger.i('Auth route: $route');
+    _logger.i('路径鉴权 Auth route: $route');
     String? token = SpUtil.getString(Constants.authorization) ?? '';
 
     if (!_skipRoutes.contains(route) && token.isEmpty) {
       Future.delayed(
           const Duration(seconds: 1), () => Get.snackbar('未登录', '请先登录再访问该页面'));
-      return const RouteSettings(name: AppRoutes.home);
+      return const RouteSettings(name: AppRoutes.init);
     }
 
     return super.redirect(route);

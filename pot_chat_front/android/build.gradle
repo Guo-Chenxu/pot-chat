@@ -1,8 +1,14 @@
 buildscript {
     ext.kotlin_version = '1.7.10'
     repositories {
-        google()
-        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public'
+        }
+        // google()
+        // mavenCentral()
     }
 
     dependencies {
@@ -12,8 +18,14 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        mavenCentral()
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven {
+            allowInsecureProtocol = true
+            url 'http://maven.aliyun.com/nexus/content/groups/public' 
+        }
+        // google()
+        // mavenCentral()
     }
 }
 
@@ -25,6 +37,6 @@ subprojects {
     project.evaluationDependsOn(':app')
 }
 
-tasks.register("clean", Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }

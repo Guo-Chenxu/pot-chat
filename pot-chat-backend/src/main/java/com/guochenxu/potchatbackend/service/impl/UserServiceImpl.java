@@ -17,6 +17,7 @@ import com.guochenxu.potchatbackend.service.VerifyCodeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
@@ -55,14 +56,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new RuntimeException("验证码错误");
         }
         User user = User.builder().email(req.getEmail()).nickname(req.getNickname())
-                .password(req.getPassword()).avatar(req.getAvatar()).build();
+                .password(DigestUtil.md5Hex(req.getPassword())).avatar(req.getAvatar()).build();
         return userMapper.insert(user) > 0;
     }
 
     @Override
-    public LoginResp login(LoginReq req) {
-        User u = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getEmail, req.getEmail()));
-        if (u == null || !StringUtils.equals(u.getPassword(), DigestUtil.bcrypt(req.getPassword()))) {
+    public LoginResp login(String email, String password) {
+        User u = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getEmail, email));
+        if (u == null || !u.getPassword().equals(DigestUtil.md5Hex(password))) {
             return null;
         }
 
@@ -74,15 +75,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public LoginResp faceLogin(LoginReq req) {
-        User u = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getEmail, req.getEmail()));
+    public LoginResp faceLogin(String email, MultipartFile image) {
+        User u = userMapper.selectOne(new LambdaQueryWrapper<User>().eq(User::getEmail, email));
         if (u == null || StringUtils.isBlank(u.getFace())) {
             return null;
         }
 
         String base64 = null;
         try {
-            base64 = Base64.getEncoder().encodeToString(req.getImage().getBytes());
+            base64 = Base64.getEncoder().encodeToString(image.getBytes());
         } catch (IOException e) {
             log.info("添加人脸时出错: ", e);
             throw new RuntimeException("人脸不存在");
@@ -99,16 +100,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean addFace(long userId, AddFaceReq req) {
+    public boolean addFace(long userId, MultipartFile image, String verifyCode) {
         User u = userMapper.selectById(userId);
         if (u == null
-                || !verifyCodeService.checkEmailVerifyCode(u.getEmail(), req.getVerifyCode())) {
+                || !verifyCodeService.checkEmailVerifyCode(u.getEmail(), verifyCode)) {
+            log.info("添加人脸时出错, {} 用户验证码错误: {}", userId, verifyCode);
             return false;
         }
 
         String base64;
         try {
-            base64 = Base64.getEncoder().encodeToString(req.getImage().getBytes());
+            base64 = Base64.getEncoder().encodeToString(image.getBytes());
             if (!faceService.faceDetect(base64)) {
                 log.error("添加人脸时出错, 未检测到人脸");
                 throw new RuntimeException("人脸不存在");
