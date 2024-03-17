@@ -10,4 +10,6 @@ package com.guochenxu.potchatbackend.constants;
 public interface RedisKeys {
 
     String VERIFY_CODE_EMAIL = "POT_CHAT:VERIFY_CODE:EMAIL:%s"; // 邮箱验证码
+
+    String USER_SESSION = "POT_CHAT:USER_SESSION:%s:%s"; // 用户id和会话id
 }

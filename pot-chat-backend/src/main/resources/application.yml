@@ -83,6 +83,13 @@ baidu:
   accessKey:
   secretKey:
 
+spark:
+  hostUrl: https://spark-api.xf-yun.com/v1.1/chat
+  appid:
+  apiSecret:
+  apiKey:
+  domain: general
+
 mybatis-plus:
   mapper-locations: classpath*:mapper/*.xml
   # 设置别名包扫描路径，通过该属性可以给包中的类注册别名
@@ -90,7 +97,7 @@ mybatis-plus:
   configuration:
     #在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
     map-underscore-to-camel-case: true
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
   global-config:
     db-config:
       id-type: ASSIGN_ID
