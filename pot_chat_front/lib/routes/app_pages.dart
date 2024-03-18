@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:pot_chat_front/middleware/router_auth.dart';
+import 'package:pot_chat_front/pages/about/index.dart';
 import 'package:pot_chat_front/pages/add_face/add_face_binding.dart';
 import 'package:pot_chat_front/pages/add_face/add_face_view.dart';
 import 'package:pot_chat_front/pages/init/index.dart';
@@ -39,6 +40,11 @@ class AppPages {
       name: AppRoutes.addFace,
       page: () => const AddFaceView(),
       binding: AddFacebinding(),
+      middlewares: [RouteAuthMiddleware(priority: 1)],
+    ),
+    GetPage(
+      name: AppRoutes.about,
+      page: () => const AboutView(),
       middlewares: [RouteAuthMiddleware(priority: 1)],
     )
   ];

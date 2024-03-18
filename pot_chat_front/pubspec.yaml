@@ -48,6 +48,8 @@ dependencies:
   sp_util:
   intl:
   image_picker:
+  url_launcher:
+  flutter_markdown:
 
 
   # The following adds the Cupertino Icons font to your application.

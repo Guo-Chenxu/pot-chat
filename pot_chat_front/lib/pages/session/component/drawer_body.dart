@@ -38,6 +38,12 @@ class DrawerBody extends GetView<SessionController> {
           ),
           const Divider(),
           ListTile(
+            title: const Text('关于小锅'),
+            trailing: const Icon(Icons.info),
+            onTap: () => {Get.toNamed(AppRoutes.about)},
+          ),
+          const Divider(),
+          ListTile(
             title: const Text('退出登录'),
             trailing: const Icon(Icons.exit_to_app),
             onTap: () => {controller.logout()},
