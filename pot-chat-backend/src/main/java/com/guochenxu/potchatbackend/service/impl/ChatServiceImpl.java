@@ -4,6 +4,9 @@ import com.alibaba.fastjson2.JSON;
 import com.guochenxu.potchatbackend.constants.RedisKeys;
 import com.guochenxu.potchatbackend.dao.ChatSessionDao;
 import com.guochenxu.potchatbackend.dto.request.ChatReq;
+import com.guochenxu.potchatbackend.dto.response.CreateResp;
+import com.guochenxu.potchatbackend.dto.response.SessionInfoResp;
+import com.guochenxu.potchatbackend.dto.response.SessionListResp;
 import com.guochenxu.potchatbackend.entity.ChatSession;
 import com.guochenxu.potchatbackend.entity.spark.RoleContent;
 import com.guochenxu.potchatbackend.service.CacheService;
@@ -15,9 +18,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +56,47 @@ public class ChatServiceImpl implements ChatService {
 
     @Resource
     private ChatSessionDao chatSessionDao;
+
+    @Override
+    public CreateResp create(String userId) {
+        ChatSession chatSession = ChatSession.builder().userId(userId)
+                .dialogues(new ArrayList<>()).build();
+        chatSession = chatSessionDao.saveSession(chatSession);
+        return CreateResp.builder().sessionId(chatSession.getId()).build();
+    }
+
+    @Override
+    public boolean delete(String userId, String sessionId) {
+        long res = chatSessionDao.deleteSession(userId, sessionId);
+        return res > 0;
+    }
+
+    @Override
+    public List<SessionListResp> list(String userId) {
+        List<ChatSession> chatSessions = chatSessionDao.selectSessions(userId);
+        List<SessionListResp> resp = new ArrayList<>();
+        if (CollectionUtils.isEmpty(chatSessions)) {
+            return resp;
+        }
+
+        chatSessions.forEach((e) -> {
+            SessionListResp temp = SessionListResp.builder().sessionId(e.getId())
+                    .description(CollectionUtils.isEmpty(e.getDialogues())
+                            ? "新建聊天"
+                            : e.getDialogues().get(0).getContent().substring(15))
+                    .updateTime(e.getUpdateTime()).build();
+            resp.add(temp);
+        });
+        return resp;
+    }
+
+    @Override
+    public SessionInfoResp info(String userId, String sessionId) {
+        ChatSession chatSession = chatSessionDao.selectSessionByUserIdAndSessionId(userId, sessionId);
+        return SessionInfoResp.builder().sessionId(chatSession.getId())
+                .history(chatSession.getDialogues())
+                .build();
+    }
 
     @Override
     public void chat(HttpServletResponse response, long userId, ChatReq req) {
