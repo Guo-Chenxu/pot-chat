@@ -16,4 +16,8 @@ class RoleContent {
     };
     return json;
   }
+
+  bool isUser() {
+    return role == "user";
+  }
 }

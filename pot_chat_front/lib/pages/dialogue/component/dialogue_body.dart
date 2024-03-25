@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:pot_chat_front/pages/dialogue/component/history.dart';
+import 'package:pot_chat_front/pages/dialogue/component/input_body.dart';
 import 'package:pot_chat_front/pages/dialogue/dialogue_controller.dart';
 import 'package:pot_chat_front/routes/app_pages.dart';
 
@@ -17,7 +19,16 @@ class DialogueBody extends GetView<DialogueController> {
         centerTitle: true,
         title: Text(description),
       ),
-      body: Center(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: HistoryBody(sessionId: sessionId),
+          ),
+          InputBody(),
+          const SizedBox(height: 10),
+        ],
+      ),
     );
   }
 }

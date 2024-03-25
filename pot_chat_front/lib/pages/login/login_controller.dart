@@ -26,8 +26,8 @@ class LoginController extends GetxController {
   String _email = "";
   String _password = "";
 
-  onEmailChanged(String username) {
-    _email = username.trim();
+  onEmailChanged(String email) {
+    _email = email.trim();
   }
 
   onPasswordChanged(String password) {
