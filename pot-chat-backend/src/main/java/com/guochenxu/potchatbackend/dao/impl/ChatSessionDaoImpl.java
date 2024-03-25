@@ -1,5 +1,6 @@
 package com.guochenxu.potchatbackend.dao.impl;
 
+import com.guochenxu.potchatbackend.constants.LLMBackground;
 import com.guochenxu.potchatbackend.dao.ChatSessionDao;
 import com.guochenxu.potchatbackend.entity.ChatSession;
 import com.guochenxu.potchatbackend.utils.DateUtil;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +30,13 @@ public class ChatSessionDaoImpl implements ChatSessionDao {
 
     @Override
     public ChatSession saveSession(ChatSession chatSession) {
+        // 删除背景对话
+        if (!CollectionUtils.isEmpty(chatSession.getDialogues())) {
+            if (LLMBackground.ROLE.equals(chatSession.getDialogues().get(0).getRole())) {
+                chatSession.getDialogues().remove(0);
+            }
+        }
+
         chatSession.setUpdateTime(DateUtil.getNowTime());
         chatSession.setDeleted(0);
         return mongoTemplate.save(chatSession);

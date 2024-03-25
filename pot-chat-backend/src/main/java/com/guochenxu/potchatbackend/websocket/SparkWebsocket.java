@@ -3,21 +3,18 @@ package com.guochenxu.potchatbackend.websocket;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.guochenxu.potchatbackend.constants.LLMBackground;
 import com.guochenxu.potchatbackend.constants.RedisKeys;
 import com.guochenxu.potchatbackend.entity.ChatSession;
 import com.guochenxu.potchatbackend.service.CacheService;
-import com.guochenxu.potchatbackend.utils.SparkUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.UUID;
 
 import com.guochenxu.potchatbackend.entity.spark.*;
@@ -95,6 +92,10 @@ public class SparkWebsocket extends WebSocketListener {
                 JSONObject payload = new JSONObject(); // payload参数
                 JSONObject message = new JSONObject();
                 JSONArray text = new JSONArray();
+
+                // 添加角色背景
+                text.add(JSON.toJSON(RoleContent.builder().role(LLMBackground.ROLE)
+                        .content(LLMBackground.CONTENT).build()));
 
                 historyList.forEach((e) -> text.add(JSON.toJSON(e)));
 
