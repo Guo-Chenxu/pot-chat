@@ -6,7 +6,10 @@ import 'package:pot_chat_front/pages/session/session_controller.dart';
 import 'package:pot_chat_front/routes/app_pages.dart';
 
 class SessionBody extends GetView<SessionController> {
-  const SessionBody({super.key});
+  SessionBody({super.key});
+
+  final GlobalKey<RefreshIndicatorState> _refreshKey =
+      GlobalKey<RefreshIndicatorState>();
 
   Widget _buildItem(BuildContext context, int index) {
     Session session = controller.sessions[index];
@@ -19,7 +22,7 @@ class SessionBody extends GetView<SessionController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(width: 10),
-                Text(session.updateTime!),
+                Text(session.updateTime ?? ""),
               ],
             ),
             Row(
@@ -59,48 +62,55 @@ class SessionBody extends GetView<SessionController> {
         centerTitle: true,
       ),
       drawer: DrawerBody(),
-      body: GetX<SessionController>(
-        init: controller,
-        initState: (_) async {
-          await controller.list();
+      body: RefreshIndicator(
+        key: _refreshKey,
+        onRefresh: () async {
+          controller.list();
         },
-        builder: (_) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () => {
-                  controller.create().then((value) {
-                    if (value != null && value.isNotEmpty) {
-                      Get.toNamed(
-                          "${AppRoutes.dialogue}?sessionId=$value&description=新建聊天");
-                    }
-                  })
-                },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: const Text(
-                  "新建对话",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              const Divider(),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: _.sessions.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        _buildItem(context, index),
-                        const Divider(),
-                      ],
-                    );
+        child: GetX<SessionController>(
+          init: controller,
+          initState: (_) async {
+            await controller.list();
+          },
+          builder: (_) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => {
+                    controller.create().then((value) {
+                      if (value != null && value.isNotEmpty) {
+                        Get.toNamed(
+                            "${AppRoutes.dialogue}?sessionId=$value&description=新建聊天");
+                      }
+                    })
                   },
+                  style:
+                      ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                  child: const Text(
+                    "新建对话",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              )
-            ],
-          );
-        },
+                const Divider(),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _.sessions.length,
+                    itemBuilder: (context, index) {
+                      return Column(
+                        children: [
+                          _buildItem(context, index),
+                          const Divider(),
+                        ],
+                      );
+                    },
+                  ),
+                )
+              ],
+            );
+          },
+        ),
       ),
     );
   }

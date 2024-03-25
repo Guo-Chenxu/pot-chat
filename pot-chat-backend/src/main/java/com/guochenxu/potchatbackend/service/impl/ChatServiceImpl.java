@@ -83,7 +83,8 @@ public class ChatServiceImpl implements ChatService {
             SessionListResp temp = SessionListResp.builder().sessionId(e.getId())
                     .description(CollectionUtils.isEmpty(e.getDialogues())
                             ? "新建聊天"
-                            : e.getDialogues().get(0).getContent().substring(15))
+                            : e.getDialogues().get(0).getContent()
+                            .substring(0, Math.min(e.getDialogues().get(0).getContent().length(), 15)))
                     .updateTime(e.getUpdateTime()).build();
             resp.add(temp);
         });
@@ -106,7 +107,7 @@ public class ChatServiceImpl implements ChatService {
             throw new RuntimeException("请求参数错误, 用户不存在该会话");
         }
         List<RoleContent> dialogueList = req.getHistory();
-        dialogueList.add(RoleContent.builder().content(req.getContent()).role("user").build());
+//        dialogueList.add(RoleContent.builder().content(req.getContent()).role("user").build());
 
         // 构建鉴权url
         String authUrl = null;

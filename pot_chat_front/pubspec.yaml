@@ -50,6 +50,10 @@ dependencies:
   image_picker:
   url_launcher:
   flutter_markdown:
+  flutter_client_sse:
+    # git:
+      # url: https://github.com/pratikbaid3/flutter_client_sse
+      # path:
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -10,7 +10,7 @@ class SessionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SessionController>(
-      builder: (controller) => const Scaffold(
+      builder: (controller) => Scaffold(
         body: SessionBody(),
       ),
     );

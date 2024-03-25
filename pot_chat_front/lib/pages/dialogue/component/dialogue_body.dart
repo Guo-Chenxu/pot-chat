@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:pot_chat_front/pages/dialogue/component/history.dart';
 import 'package:pot_chat_front/pages/dialogue/component/input_body.dart';
 import 'package:pot_chat_front/pages/dialogue/dialogue_controller.dart';
-import 'package:pot_chat_front/routes/app_pages.dart';
 
 class DialogueBody extends GetView<DialogueController> {
   DialogueBody({super.key});
@@ -25,7 +23,9 @@ class DialogueBody extends GetView<DialogueController> {
           Expanded(
             child: HistoryBody(sessionId: sessionId),
           ),
-          InputBody(),
+          InputBody(
+            sessionId: sessionId,
+          ),
           const SizedBox(height: 10),
         ],
       ),

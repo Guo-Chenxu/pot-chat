@@ -20,4 +20,12 @@ class ChatService {
         await HttpRequest.pathDelete(RequestApi.deleteSession, params: [id]);
     return CommonResp.fromJson(resp);
   }
+
+  Future<CommonResp?> info(String sessionId) async {
+    Map<String, dynamic> resp =
+        await HttpRequest.pathGet(RequestApi.infoSession, params: [sessionId]);
+    return CommonResp.fromJson(resp);
+  }
+
+  
 }

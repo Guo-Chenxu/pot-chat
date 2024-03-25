@@ -94,10 +94,17 @@ public class SparkWebsocket extends WebSocketListener {
                 JSONArray text = new JSONArray();
 
                 // 添加角色背景
-                text.add(JSON.toJSON(RoleContent.builder().role(LLMBackground.ROLE)
-                        .content(LLMBackground.CONTENT).build()));
+//                text.add(JSON.toJSON(RoleContent.builder().role(LLMBackground.ROLE)
+//                        .content(LLMBackground.CONTENT).build()));
 
-                historyList.forEach((e) -> text.add(JSON.toJSON(e)));
+                historyList.forEach((e) -> text.add(JSON.toJSON(
+                        RoleContent.builder()
+                                .role(e.getRole())
+                                .content("user".equals(e.getRole())
+                                        ? LLMBackground.CONTENT + "\n" + e.getContent()
+                                        : e.getContent())
+                                .build())
+                ));
 
                 message.put("text", text);
                 payload.put("message", message);
@@ -107,6 +114,8 @@ public class SparkWebsocket extends WebSocketListener {
                 requestJson.put("payload", payload);
 
                 log.info("发送消息: {}", requestJson);
+                writer.write("data: [start]\n\n");
+                writer.flush();
                 webSocket.send(requestJson.toString());
 
                 // 等待服务端返回完毕后关闭
@@ -141,8 +150,15 @@ public class SparkWebsocket extends WebSocketListener {
             totalAnswer.append(temp.getContent());
             writer.write("data: " + temp.getContent() + "\n\n");
             writer.flush();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
         if (myJsonParse.getHeader().getStatus() == 2) {
+            writer.write("data: [done]\n\n");
+            writer.flush();
             log.info("回复结束, 总答案为: {}", totalAnswer.toString());
             // 结束后在缓存中放入该对话
             historyList.add(RoleContent.builder().role("assistant").content(totalAnswer.toString()).build());

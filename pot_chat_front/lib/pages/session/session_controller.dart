@@ -22,19 +22,10 @@ class SessionController extends GetxController {
   List<Session> get sessions => _sessions;
 
   void logout() async {
-    await _userService.logout();
+    // await _userService.logout();
     SpUtil.clear();
     Get.offAllNamed(AppRoutes.init);
   }
-
-  // void addFace() async {
-  //   final cameraImages = await _picker.pickImage(source: ImageSource.camera);
-  //   if (cameraImages == null) {
-  //     Get.snackbar("拍摄人脸不能为空", "");
-  //     return;
-  //   }
-  //   final image = await cameraImages.readAsBytes();
-  // }
 
   Future<String?> create() async {
     CommonResp? commonResp = await _chatService.create();
@@ -54,10 +45,6 @@ class SessionController extends GetxController {
     _logger.i("createSessionResp: $createSessionResp");
     return createSessionResp.sessionId;
   }
-
-  // void info(String sessionId) {
-  //   // todo 获取详情, 跳转页面
-  // }
 
   list() async {
     CommonResp? commonResp = await _chatService.list();

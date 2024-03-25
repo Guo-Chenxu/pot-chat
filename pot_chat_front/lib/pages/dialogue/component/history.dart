@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:pot_chat_front/pages/dialogue/dialogue_controller.dart';
 
@@ -17,7 +16,7 @@ class HistoryBody extends GetView<DialogueController> {
       },
       builder: (_) {
         return ListView.builder(
-          reverse: true,
+          reverse: false,
           itemCount: _.history.length,
           itemBuilder: (BuildContext context, int index) {
             final message = _.history[index];

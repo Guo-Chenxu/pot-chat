@@ -3,9 +3,11 @@ import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:pot_chat_front/pages/dialogue/dialogue_controller.dart';
 
 class InputBody extends GetView<DialogueController> {
-  InputBody({super.key});
+  InputBody({super.key, required this.sessionId});
 
   final TextEditingController _textEditingController = TextEditingController();
+
+  String sessionId;
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +41,14 @@ class InputBody extends GetView<DialogueController> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.send),
+                icon: const Icon(
+                  Icons.send,
+                  color: Colors.blue,
+                ),
                 onPressed: () {
-                  // todo 发送聊天
-                  controller.test(
+                  if (_textEditingController.text.isEmpty) return;
+                  controller.send(
+                    sessionId,
                     _textEditingController.text,
                   );
                   _textEditingController.clear();
