@@ -67,4 +67,13 @@ class HttpRequest {
     _logger.i('headers: {$headers}');
     return headers;
   }
+
+  static Future pathDelete(String path, {List<dynamic>? params}) async {
+    Response? response;
+    for (dynamic param in (params ?? [])) {
+      path = '$path/$param';
+    }
+    response = await _dio.delete(path, options: Options(headers: getHeader()));
+    return response.data;
+  }
 }

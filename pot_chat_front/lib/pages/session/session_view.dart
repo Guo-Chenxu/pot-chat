@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:pot_chat_front/pages/register/component/register_body.dart';
-import 'package:pot_chat_front/pages/register/register_controller.dart';
 import 'package:pot_chat_front/pages/session/component/session_body.dart';
 import 'package:pot_chat_front/pages/session/session_controller.dart';
 

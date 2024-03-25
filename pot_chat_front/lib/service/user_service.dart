@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:logger/logger.dart';
 import 'package:pot_chat_front/http/http_requests.dart';
 import 'package:pot_chat_front/http/request_apis.dart';
 import 'package:pot_chat_front/models/common_resp.dart';
@@ -8,8 +7,6 @@ import 'package:pot_chat_front/models/register.dart';
 
 class UserService {
   static UserService get to => Get.find();
-
-  static final Logger _logger = Logger();
 
   Future<CommonResp?> sendVerifyCode(String email) async {
     Map<String, dynamic> resp = await HttpRequest.formPost(

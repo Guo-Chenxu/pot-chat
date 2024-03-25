@@ -8,4 +8,10 @@ class RequestApi {
   static const String faceLogin = "/user/faceLogin";
   static const String addFace = "/user/addFace";
   static const String logout = "/user/logout";
+
+  static const String createSession = '/chat/create';
+  static const String deleteSession = '/chat/delete';
+  static const String listSessions = '/chat/list';
+  static const String infoSession = '/chat/info';
+  static const String chat = '/chat/chat';
 }

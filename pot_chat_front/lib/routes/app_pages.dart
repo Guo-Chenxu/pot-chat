@@ -3,6 +3,8 @@ import 'package:pot_chat_front/middleware/router_auth.dart';
 import 'package:pot_chat_front/pages/about/index.dart';
 import 'package:pot_chat_front/pages/add_face/add_face_binding.dart';
 import 'package:pot_chat_front/pages/add_face/add_face_view.dart';
+import 'package:pot_chat_front/pages/dialogue/dialogue_binding.dart';
+import 'package:pot_chat_front/pages/dialogue/dialogue_view.dart';
 import 'package:pot_chat_front/pages/init/index.dart';
 import 'package:pot_chat_front/pages/login/login_binding.dart';
 import 'package:pot_chat_front/pages/login/login_view.dart';
@@ -34,6 +36,12 @@ class AppPages {
       name: AppRoutes.session,
       page: () => const SessionView(),
       binding: SessionBinding(),
+      middlewares: [RouteAuthMiddleware(priority: 1)],
+    ),
+    GetPage(
+      name: AppRoutes.dialogue,
+      page: () => DialogueView(),
+      binding: DialogueBinding(),
       middlewares: [RouteAuthMiddleware(priority: 1)],
     ),
     GetPage(
