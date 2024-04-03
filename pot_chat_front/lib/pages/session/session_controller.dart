@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pot_chat_front/http/http_code.dart';
@@ -27,8 +29,21 @@ class SessionController extends GetxController {
     Get.offAllNamed(AppRoutes.init);
   }
 
-  Future<String?> create() async {
-    CommonResp? commonResp = await _chatService.create();
+  Future<Map<int, String>?> getPrompts() async {
+    CommonResp? commonResp = await _chatService.getPrompts();
+    if (commonResp == null || commonResp.code != HttpCode.success) {
+      _logger.e('获取提示词失败, ${commonResp?.message ?? '未知原因'}');
+      Get.snackbar('获取提示词失败', commonResp?.message ?? '网络异常');
+      return null;
+    }
+
+    Map<int, String> resultMap = Map<int, String>.from(
+        commonResp.data.map((key, value) => MapEntry(int.parse(key), value)));
+    return resultMap;
+  }
+
+  Future<String?> create(int promptId) async {
+    CommonResp? commonResp = await _chatService.create(promptId);
     if (commonResp == null || commonResp.code != HttpCode.success) {
       _logger.e('创建对话失败, ${commonResp?.message ?? '未知原因'}');
       Get.snackbar('创建对话失败', commonResp?.message ?? '网络异常');

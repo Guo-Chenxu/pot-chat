@@ -3,9 +3,16 @@ import 'package:pot_chat_front/http/request_apis.dart';
 import 'package:pot_chat_front/models/common_resp.dart';
 
 class ChatService {
-  Future<CommonResp?> create() async {
+  Future<CommonResp?> getPrompts() async {
     Map<String, dynamic> resp =
-        await HttpRequest.bodyPost(RequestApi.createSession, params: {});
+        await HttpRequest.pathGet(RequestApi.getPrompts, params: []);
+    return CommonResp.fromJson(resp);
+  }
+
+  Future<CommonResp?> create(int promptId) async {
+    Map<String, dynamic> resp = await HttpRequest.formPost(
+        RequestApi.createSession,
+        params: {"promptId": promptId});
     return CommonResp.fromJson(resp);
   }
 
@@ -26,6 +33,4 @@ class ChatService {
         await HttpRequest.pathGet(RequestApi.infoSession, params: [sessionId]);
     return CommonResp.fromJson(resp);
   }
-
-  
 }

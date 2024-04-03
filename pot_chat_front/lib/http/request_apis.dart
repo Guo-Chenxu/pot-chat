@@ -9,6 +9,7 @@ class RequestApi {
   static const String addFace = "/user/addFace";
   static const String logout = "/user/logout";
 
+  static const String getPrompts = "/chat/prompts";
   static const String createSession = '/chat/create';
   static const String deleteSession = '/chat/delete';
   static const String listSessions = '/chat/list';

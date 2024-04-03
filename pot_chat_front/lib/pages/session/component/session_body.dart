@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:pot_chat_front/models/session.dart';
 import 'package:pot_chat_front/pages/session/component/drawer_body.dart';
+import 'package:pot_chat_front/pages/session/component/prompt_body.dart';
 import 'package:pot_chat_front/pages/session/session_controller.dart';
 import 'package:pot_chat_front/routes/app_pages.dart';
 
@@ -10,6 +12,8 @@ class SessionBody extends GetView<SessionController> {
 
   final GlobalKey<RefreshIndicatorState> _refreshKey =
       GlobalKey<RefreshIndicatorState>();
+
+  final Logger _logger = Logger();
 
   Widget _buildItem(BuildContext context, int index) {
     Session session = controller.sessions[index];
@@ -79,10 +83,12 @@ class SessionBody extends GetView<SessionController> {
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () => {
-                    controller.create().then((value) {
+                    controller.getPrompts().then((value) {
                       if (value != null && value.isNotEmpty) {
-                        Get.toNamed(
-                            "${AppRoutes.dialogue}?sessionId=$value&description=新建聊天");
+                        _logger.i(value);
+                        Get.dialog(
+                          PromptBody(content: value),
+                        );
                       }
                     })
                   },
