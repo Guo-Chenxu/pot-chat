@@ -2,6 +2,7 @@ package com.guochenxu.potchatbackend.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
+import com.guochenxu.potchatbackend.constants.LLMBackground;
 import com.guochenxu.potchatbackend.dto.R;
 import com.guochenxu.potchatbackend.dto.request.ChatReq;
 import com.guochenxu.potchatbackend.dto.response.CreateResp;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 聊天接口
@@ -33,11 +36,22 @@ public class ChatController {
     @Resource
     private ChatService chatService;
 
+    @GetMapping("/prompts")
+    @SaCheckLogin
+    @ApiOperation("查看所有提示词")
+    private R<Map<Integer, String>> listPrompts() {
+        Map<Integer, String> map = new HashMap<>();
+        map.put(LLMBackground.PSYCHOLOGIST, "心理医生");
+        map.put(LLMBackground.COMPUTER_TEACHER, "计算机老师");
+        return R.success(map);
+    }
+
+
     @PostMapping("/create")
     @SaCheckLogin
     @ApiOperation("创建聊天")
-    public R<CreateResp> create() {
-        return R.success(chatService.create(StpUtil.getLoginIdAsString()));
+    public R<CreateResp> create(@RequestParam("promptId") Integer promptId) {
+        return R.success(chatService.create(StpUtil.getLoginIdAsString(), promptId));
     }
 
     @DeleteMapping("/delete/{sessionId}")

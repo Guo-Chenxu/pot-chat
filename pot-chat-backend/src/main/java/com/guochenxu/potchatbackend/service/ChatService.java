@@ -20,7 +20,7 @@ public interface ChatService {
     /**
      * 新增会话
      */
-    CreateResp create(String userId);
+    CreateResp create(String userId, Integer promptId);
 
     /**
      * 删除会话

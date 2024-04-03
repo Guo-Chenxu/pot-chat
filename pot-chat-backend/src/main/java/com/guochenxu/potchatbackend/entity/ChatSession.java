@@ -40,6 +40,10 @@ public class ChatSession implements Serializable {
      */
     private List<RoleContent> dialogues;
     /**
+     * 对话类型
+     */
+    private Integer promptId;
+    /**
      * 更新时间
      */
     private String updateTime;

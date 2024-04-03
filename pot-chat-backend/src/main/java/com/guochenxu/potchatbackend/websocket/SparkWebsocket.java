@@ -48,9 +48,11 @@ public class SparkWebsocket extends WebSocketListener {
 
     private StringBuilder totalAnswer; // 总回答
 
+    private String background; // 背景提示词
+
     // 构造函数
     public SparkWebsocket(long userId, String sessionId, List<RoleContent> historyList, HttpServletResponse response,
-                          String appid, String domain, CacheService cacheService) {
+                          String appid, String domain, CacheService cacheService, String background) {
         this.userId = userId;
         this.sessionId = sessionId;
         this.wsCloseFlag = false;
@@ -59,6 +61,7 @@ public class SparkWebsocket extends WebSocketListener {
         this.domain = domain;
         this.cacheService = cacheService;
         this.totalAnswer = new StringBuilder();
+        this.background = background;
         try {
             this.writer = response.getWriter();
         } catch (IOException e) {
@@ -101,7 +104,7 @@ public class SparkWebsocket extends WebSocketListener {
                         RoleContent.builder()
                                 .role(e.getRole())
                                 .content("user".equals(e.getRole())
-                                        ? LLMBackground.CONTENT + "\n" + e.getContent()
+                                        ? background + "\n" + e.getContent()
                                         : e.getContent())
                                 .build())
                 ));

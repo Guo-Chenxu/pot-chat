@@ -1,6 +1,7 @@
 package com.guochenxu.potchatbackend.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import com.guochenxu.potchatbackend.config.PromptsConfig;
 import com.guochenxu.potchatbackend.constants.RedisKeys;
 import com.guochenxu.potchatbackend.dao.ChatSessionDao;
 import com.guochenxu.potchatbackend.dto.request.ChatReq;
@@ -52,15 +53,21 @@ public class ChatServiceImpl implements ChatService {
     private String domain;
 
     @Resource
+    private PromptsConfig promptsConfig;
+
+    @Resource
     private CacheService cacheService;
 
     @Resource
     private ChatSessionDao chatSessionDao;
 
     @Override
-    public CreateResp create(String userId) {
+    public CreateResp create(String userId, Integer promptId) {
+        if (promptId < 0 || promptId >= promptsConfig.getPrompts().length) {
+            throw new IllegalArgumentException("请选择正确的提示词");
+        }
         ChatSession chatSession = ChatSession.builder().userId(userId)
-                .dialogues(new ArrayList<>()).build();
+                .dialogues(new ArrayList<>()).promptId(promptId).build();
         chatSession = chatSessionDao.saveSession(chatSession);
         return CreateResp.builder().sessionId(chatSession.getId()).build();
     }
@@ -120,7 +127,9 @@ public class ChatServiceImpl implements ChatService {
         String url = authUrl.toString().replace("http://", "ws://").replace("https://", "wss://");
         Request request = new Request.Builder().url(url).build();
 
-        client.newWebSocket(request, new SparkWebsocket(userId, req.getSessionId(), dialogueList, response, appid, domain, cacheService));
+        ChatSession temp = chatSessionDao.selectSessionByUserIdAndSessionId(String.valueOf(userId), req.getSessionId());
+        client.newWebSocket(request, new SparkWebsocket(userId, req.getSessionId(), dialogueList, response,
+                appid, domain, cacheService, promptsConfig.getPrompts()[temp.getPromptId()]));
         cacheService.delete(String.format(RedisKeys.USER_SESSION, userId, req.getSessionId()));
         while (!cacheService.exist(String.format(RedisKeys.USER_SESSION, userId, req.getSessionId()))) {
             // 空循环等待回复结束

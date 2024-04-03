@@ -1,5 +1,6 @@
 package com.guochenxu.potchatbackend;
 
+import com.guochenxu.potchatbackend.config.PromptsConfig;
 import com.guochenxu.potchatbackend.dao.ChatSessionDao;
 import com.guochenxu.potchatbackend.entity.ChatSession;
 import com.guochenxu.potchatbackend.entity.spark.RoleContent;
@@ -7,10 +8,12 @@ import com.guochenxu.potchatbackend.service.ChatService;
 import com.guochenxu.potchatbackend.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,6 +32,14 @@ public class ChatServiceTest {
 
     @Resource
     private ChatSessionDao chatSessionDao;
+
+    @Resource
+    private PromptsConfig promptsConfig;
+
+    @Test
+    public void testGetPrompts() {
+        Arrays.stream(promptsConfig.getPrompts()).forEach(System.out::println);
+    }
 
     @Test
     public void testInsert() {
