@@ -85,8 +85,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         try {
             base64 = Base64.getEncoder().encodeToString(image.getBytes());
         } catch (IOException e) {
-            log.info("添加人脸时出错: ", e);
-            throw new RuntimeException("人脸不存在");
+            log.info("图片转为base64时出错: ", e);
+            throw new RuntimeException("图片无法转换成base64编码");
         }
 
         if (!faceService.faceMatch(u.getFace(), base64)) {
