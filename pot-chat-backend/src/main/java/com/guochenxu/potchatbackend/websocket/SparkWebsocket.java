@@ -50,9 +50,11 @@ public class SparkWebsocket extends WebSocketListener {
 
     private String background; // 背景提示词
 
+    private Integer promptId; //  提示词id
+
     // 构造函数
     public SparkWebsocket(long userId, String sessionId, List<RoleContent> historyList, HttpServletResponse response,
-                          String appid, String domain, CacheService cacheService, String background) {
+                          String appid, String domain, CacheService cacheService, Integer promptId, String background) {
         this.userId = userId;
         this.sessionId = sessionId;
         this.wsCloseFlag = false;
@@ -60,6 +62,7 @@ public class SparkWebsocket extends WebSocketListener {
         this.appid = appid;
         this.domain = domain;
         this.cacheService = cacheService;
+        this.promptId = promptId;
         this.totalAnswer = new StringBuilder();
         this.background = background;
         try {
@@ -165,7 +168,8 @@ public class SparkWebsocket extends WebSocketListener {
             log.info("回复结束, 总答案为: {}", totalAnswer.toString());
             // 结束后在缓存中放入该对话
             historyList.add(RoleContent.builder().role("assistant").content(totalAnswer.toString()).build());
-            ChatSession chatSession = ChatSession.builder().id(sessionId).userId(String.valueOf(userId))
+            ChatSession chatSession = ChatSession.builder().id(sessionId)
+                    .userId(String.valueOf(userId)).promptId(promptId)
                     .dialogues(historyList).build();
             cacheService.add(String.format(RedisKeys.USER_SESSION, userId, sessionId), JSON.toJSONString(chatSession));
             wsCloseFlag = true;

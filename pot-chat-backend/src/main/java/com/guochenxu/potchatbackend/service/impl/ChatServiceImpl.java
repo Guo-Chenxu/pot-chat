@@ -129,7 +129,7 @@ public class ChatServiceImpl implements ChatService {
 
         ChatSession temp = chatSessionDao.selectSessionByUserIdAndSessionId(String.valueOf(userId), req.getSessionId());
         client.newWebSocket(request, new SparkWebsocket(userId, req.getSessionId(), dialogueList, response,
-                appid, domain, cacheService, promptsConfig.getPrompts()[temp.getPromptId()]));
+                appid, domain, cacheService, temp.getPromptId(), promptsConfig.getPrompts()[temp.getPromptId()]));
         cacheService.delete(String.format(RedisKeys.USER_SESSION, userId, req.getSessionId()));
         while (!cacheService.exist(String.format(RedisKeys.USER_SESSION, userId, req.getSessionId()))) {
             // 空循环等待回复结束

@@ -19,6 +19,7 @@ class HttpRequest {
     },
   ));
 
+
   static final Logger _logger = Logger();
 
   static Future pathGet(String path, {List<dynamic>? params}) async {
